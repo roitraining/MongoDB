@@ -1,0 +1,117 @@
+db
+show dbs
+use productdb
+product = {"manufacturer": "Bosch", "price": 199.99, "retailer": 199}
+db.products.insert(product)
+db.products.find()
+db.products.find({})
+db.products.find({"price" : 199.99})
+db.products.find({"price" : 199.99}, {"_id":0})
+db.products.find({"price" : 199.99}, {"manufacturer":1})
+
+product_list = [
+{"manufacturer" : "GE", "price" : 199.99, "retailer" : 179},
+{"manufacturer" : "AEG", "price" : 179.99, "retailer": 179}
+]
+db.products.insert(product_list)
+db.products.find({"price" : 199.99}, {"_id":0})
+db.products.find({}, {"_id":0})
+
+db.products.remove({"manufacturer" : "Bosch"})
+db.products.find({})
+
+product = {"manufacturer": "Bosch", "price": 199.99, "retailer": 199}
+db.products.insert(product)
+db.products.find({})
+
+db.products.update({"manufacturer":"Bosch"}, {"$set": {"retailer":189}})
+db.products.find({"_id":ObjectId("613e2a6e215435f398e87464")})
+db.products.update({"retailer":189}, {"$set": {"city":"London"}})
+db.products.find({"_id":ObjectId("613e2a6e215435f398e87464")})
+
+db.products.update({"retailer":199}, {"location":"Montreal"})
+db.products.find({}, {"_id":0})
+
+db.products.update({"manufacturer":"Bosch"}, {"$inc" : {"price": 1}})
+db.products.find({"manufacturer":"Bosch"})
+
+db.products.update({"manufacturer":"Bosch"}, {"$inc" : {"price": -1}})
+db.products.find({"manufacturer":"Bosch"})
+
+db.products.find()
+db.products.update({"price": 199.99}, {"$unset": {"city": 0}})
+db.products.find()
+db.products.update({"price": 199.99}, {"$unset": {"city": 0}}, {"multi":"true"})
+db.products.find()
+
+product = {"manufacturer": "Samsung", "price": 299.99, "retailer": 199, colors : ["white", "black"]}
+db.products.insert(product)
+db.products.update({"manufacturer": "Samsung"}, {"$push": {"colors": "gray"}})
+db.products.find({"manufacturer": "Samsung"})
+
+db.products.update({"manufacturer": "Samsung"}, {"$pop": {"colors": 1}})
+db.products.find({"manufacturer": "Samsung"}, {"colors": 1})
+
+db.products.update({"manufacturer": "Samsung"}, {"$set": {"colors": ["white", "black", "gray"]}})
+
+db.products.update({"manufacturer": "Samsung"}, {"$pop": {"colors": -1}})
+db.products.find({"manufacturer": "Samsung"}, {"colors": 1})
+db.products.update({"manufacturer": "Samsung"}, {"$pull": {"colors": "black"}})
+db.products.find({"manufacturer": "Samsung"}, {"colors": 1})
+
+db.products.update({"manufacturer": "Bosch"}, {"$inc" : {"quantity":1}})
+db.products.find({"manufacturer": "Bosch"})
+
+db.products.update({"manufacturer": "Sony"}, {"$inc" : {"quantity":1}})
+db.products.find({"manufacturer": "Sony"})
+
+db.products.update({"manufacturer": "Sony"}, {"$inc" : {"quantity":1}}, {"upsert": true})
+db.products.find({"manufacturer": "Sony"})
+
+db.products.remove({"manufacturer" : "Sony"})
+db.products.find({"manufacturer": "Sony"})
+
+db.products.find({"retailer": {$gte: 179, $lte: 199}})
+
+db.products.find({$or: [{"manufacturer":"GE"}, {"retailer": 189}]})
+db.products.find({"manufacturer": {$in: ["GE", "Bosch"]}})
+
+db.products.find().limit(3)
+db.products.find().skip(1)
+db.products.find().skip(1).limit(3)
+
+db.products.find().sort({"price" : 1})
+db.products.find().sort({"price" : -1})
+
+db.products.update({"manufacturer":"GE"}, {$set: {"colors":["black","white"]}})
+
+db.products.find({"colors":"gray"})
+db.products.find({"colors":"white"})
+
+db.products.update({"manufacturer":"GE"}, {$set: {"model": [ {"size":"large", "color":"blue"}, {"size":"medium", "color":"red"}]}})
+db.products.update({"manufacturer":"Bosch"}, {$set: {"model": [ {"size":"large", "color":"green"}, {"size":"medium", "color":"blue"}]}})
+db.products.find({"manufacturer":"GE"})
+db.products.find({"model.size":"large"})
+db.products.find({"model.color":"green"})
+db.products.find({"model.size":"large", "model.color":"green"})
+
+db.products.update({"manufacturer":"GE"}, {$push: {"model": {"size": "large", "color":"yellow"}}})
+db.products.update({"manufacturer":"GE"}, {$push: {"model": {"size": "large", "color":"purple"}}})
+db.products.find({"manufacturer":"GE"}, {"model": {$slice: 2}})
+db.products.find({"manufacturer":"GE"}, {"model": {$slice: -2}})
+db.products.find({"manufacturer":"GE"}, {"model": {$slice: [0, 2]}})
+
+db.products.count()
+
+db.products.distinct("manufacturer")
+
+
+s = db.getMongo().startSession()
+s.startTransaction()
+db.table1.insertOne({x:1,y:2})
+db.table1.insertOne({x:3,y:4})
+db.table1.find()
+s.commitTransaction()
+s.abortTransaction()
+db.table1.find()
+
