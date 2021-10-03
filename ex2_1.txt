@@ -1,0 +1,17 @@
+Exercise 2.1
+1. Create a new database called exercises.
+2. Create a new document representing a game user that has the following properties:
+	username
+        email
+        password
+        score
+3. Add the document to a Mongo collection called users.
+4. Create and add two more users at once.
+5. Increase the score of the first users.
+6. Change the second user's password.
+7. Add a new property called colorscheme to the first two users.
+8. Add an array of favorite colors to the third user giving them two favorite colors.
+9. Add red as a favorite color to all users
+10. Remove one of the colors you chose for user 3 from the array.
+11. Remove user 2.
+
