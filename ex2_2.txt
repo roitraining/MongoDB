@@ -1,10 +1,10 @@
 Exercise 2.2
 1. Using the Northwind database, find all the products with a price 
-   between 20 and 30 and display only their productid, productname and price
+   between 20 and 30 and display only their productid, productname, and price.
 2. Find all the products in categories 1 and 3 and sort them in descending
-   price order
-3. Using the Northwind2 find how many orders in the orders1 collection
-   there are for ProductID 18
+   price order.
+3. Using Northwind2, find how many orders in the orders1 collection
+   there are for ProductID 18.
 
 
 
