@@ -21,13 +21,16 @@ db.products.remove({"manufacturer" : "Bosch"})
 db.products.find({})
 
 product = {"manufacturer": "Bosch", "price": 199.99, "retailer": 199}
-db.products.insert(product)
+db.products.insertOne(product)
 db.products.find({})
 
 db.products.update({"manufacturer":"Bosch"}, {"$set": {"retailer":189}})
-db.products.find({"_id":ObjectId("613e2a6e215435f398e87464")})
+db.products.find({"_id":ObjectId("616ec84a29713ca197fec812")})
 db.products.update({"retailer":189}, {"$set": {"city":"London"}})
 db.products.find({"_id":ObjectId("613e2a6e215435f398e87464")})
+
+db.products.update({"retailer":179}, {"$set": {"city":"Paris"}})
+
 
 db.products.update({"retailer":199}, {"location":"Montreal"})
 db.products.find({}, {"_id":0})
@@ -38,9 +41,19 @@ db.products.find({"manufacturer":"Bosch"})
 db.products.update({"manufacturer":"Bosch"}, {"$inc" : {"price": -1}})
 db.products.find({"manufacturer":"Bosch"})
 
+db.products.insert({manufacturer:"Sanyo", price:"100"})
+db.products.update({manufacturer:"Sanyo"}, {$inc:{price:1}})
+db.products.update({manufacturer:"Sanyo"}, {$set:{price:100}})
+db.products.update({manufacturer:"Sanyo"}, {$inc:{price:1}})
+
 db.products.find()
 db.products.update({"price": 199.99}, {"$unset": {"city": 0}})
 db.products.find()
+db.products.update({city:"London"}, {"$unset": {"city": 1, retailer:1}})
+
+db.products.update({"price": 199.99}, {"$set": {"city": "London"}}, {multi:"true"})
+
+
 db.products.update({"price": 199.99}, {"$unset": {"city": 0}}, {"multi":"true"})
 db.products.find()
 
@@ -74,7 +87,9 @@ db.products.find({"manufacturer": "Sony"})
 db.products.find({"retailer": {$gte: 179, $lte: 199}})
 
 db.products.find({$or: [{"manufacturer":"GE"}, {"retailer": 189}]})
-db.products.find({"manufacturer": {$in: ["GE", "Bosch"]}})
+db.products.find({$or: [{"manufacturer":"Sanyo"}, {"retailer": 199}]})
+
+db.products.find({"manufacturer": {$in: ["Sanyo", "Samsung"]}})
 
 db.products.find().limit(3)
 db.products.find().skip(1)
@@ -82,14 +97,16 @@ db.products.find().skip(1).limit(3)
 
 db.products.find().sort({"price" : 1})
 db.products.find().sort({"price" : -1})
+db.products.update({manufacturer:"Sony"}, {$set:{colors:null}})
+db.products.find({colors:null })
+db.products.find({colors: {$ne:null }})
 
-db.products.update({"manufacturer":"GE"}, {$set: {"colors":["black","white"]}})
 
 db.products.find({"colors":"gray"})
 db.products.find({"colors":"white"})
 
-db.products.update({"manufacturer":"GE"}, {$set: {"model": [ {"size":"large", "color":"blue"}, {"size":"medium", "color":"red"}]}})
-db.products.update({"manufacturer":"Bosch"}, {$set: {"model": [ {"size":"large", "color":"green"}, {"size":"medium", "color":"blue"}]}})
+db.products.update({"manufacturer":"GE"}, {$set: {"model": [ {"size":"large", "color":"blue"}, {"size":"medium", "color":"red"}]}}, {upsert:true})
+db.products.update({"manufacturer":"Samsung"}, {$set: {"model": [ {"size":"large", "color":"green"}, {"size":"medium", "color":"blue"}]}})
 db.products.find({"manufacturer":"GE"})
 db.products.find({"model.size":"large"})
 db.products.find({"model.color":"green"})
@@ -100,10 +117,12 @@ db.products.update({"manufacturer":"GE"}, {$push: {"model": {"size": "large", "c
 db.products.find({"manufacturer":"GE"}, {"model": {$slice: 2}})
 db.products.find({"manufacturer":"GE"}, {"model": {$slice: -2}})
 db.products.find({"manufacturer":"GE"}, {"model": {$slice: [0, 2]}})
+db.products.find({"manufacturer":"GE"}, {_id:0, manufacturer: 1, "model": {$slice: [1,3]}})
 
 db.products.count()
 
 db.products.distinct("manufacturer")
+db.products.distinct("manufacturer", {price:{$gte:199}})
 
 
 s = db.getMongo().startSession()

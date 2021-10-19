@@ -7,7 +7,7 @@ Exercise 2.1
         score
 3. Add the document to a Mongo collection called users.
 4. Create and add two more users at once.
-5. Increase the score of the first users.
+5. Increase the score of the first user.
 6. Change the second user's password.
 7. Add a new property called colorscheme to the first two users.
 8. Add an array of favorite colors to the third user giving them two favorite colors.

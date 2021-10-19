@@ -1,6 +1,9 @@
 ﻿using System;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+
+// https://www.mongodb.com/developer/quickstart/csharp-crud-tutorial/
 
 namespace csharp
 {
@@ -22,6 +25,12 @@ namespace csharp
                     break;
                 case "listregions":
                     ListRegions();
+                    break;
+                case "filter1":
+                    Filter1();
+                    break;
+                case "lin":
+                    Linq1();
                     break;
                 
             }
@@ -52,5 +61,39 @@ namespace csharp
                 Console.WriteLine(r); 
 
         }
+        static void Filter1()
+        {
+            var nw = dbClient.GetDatabase("Northwind");
+            var territories = nw.GetCollection<BsonDocument>("territories");
+            var filter = Builders<BsonDocument>.Filter.Eq("RegionID",1);
+            var territories2 = territories.Find(filter).ToList();
+            foreach (var t in territories2)
+                Console.WriteLine(t); 
+
+        }
+
+        static void Linq1()
+        {
+            var nw = dbClient.GetDatabase("Northwind");
+            var territories = nw.GetCollection<Territory>("territories");
+
+            
+
+            var query = from t in territories.AsQueryable()
+            where t.RegionID == 1
+            select t;
+            // var filter = Builders<BsonDocument>.Filter.Eq("RegionID",1);
+            // var territories2 = territories.Find(filter).ToList();
+            foreach (var t in territories.AsList<Territory>())
+                Console.WriteLine(t); 
+
+        }
+    }
+
+    public class Territory
+    {
+        public int TerritoryID {get; set;}
+        public string TerritoryDescription {get;set;}
+        public int RegionID {get; set;}
     }
 }
