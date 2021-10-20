@@ -29,9 +29,9 @@ namespace csharp
                 case "filter1":
                     Filter1();
                     break;
-                case "lin":
-                    Linq1();
-                    break;
+                // case "linq":
+                //     Linq1();
+                //     break;
                 
             }
         }
@@ -72,22 +72,22 @@ namespace csharp
 
         }
 
-        static void Linq1()
-        {
-            var nw = dbClient.GetDatabase("Northwind");
-            var territories = nw.GetCollection<Territory>("territories");
+        // static void Linq1()
+        // {
+        //     var nw = dbClient.GetDatabase("Northwind");
+        //     var territories = nw.GetCollection<Territory>("territories");
 
             
 
-            var query = from t in territories.AsQueryable()
-            where t.RegionID == 1
-            select t;
-            // var filter = Builders<BsonDocument>.Filter.Eq("RegionID",1);
-            // var territories2 = territories.Find(filter).ToList();
-            foreach (var t in territories.AsList<Territory>())
-                Console.WriteLine(t); 
+        //     var query = from t in territories.AsQueryable()
+        //     where t.RegionID == 1
+        //     select t;
+        //     // var filter = Builders<BsonDocument>.Filter.Eq("RegionID",1);
+        //     // var territories2 = territories.Find(filter).ToList();
+        //     foreach (var t in territories.AsList<Territory>())
+        //         Console.WriteLine(t); 
 
-        }
+        // }
     }
 
     public class Territory
