@@ -119,6 +119,33 @@ db.products.find({"manufacturer":"GE"}, {"model": {$slice: -2}})
 db.products.find({"manufacturer":"GE"}, {"model": {$slice: [0, 2]}})
 db.products.find({"manufacturer":"GE"}, {_id:0, manufacturer: 1, "model": {$slice: [1,3]}})
 
+
+db.products.replaceOne({manufacturer:"GE"}, 
+  {
+    manufacturer: 'GE',
+    price: 209.99,
+    retailer: 179,
+    model: [
+      { size: 'large', color: 'green' },
+      { size: 'medium', color: 'blue' },
+      { size: 'small', color: 'yellow' },
+      { size: 'large', color: 'purple' }
+    ]
+  })
+
+db.products.updateOne({manufacturer:"GE", "model.size":"medium"}
+    , {$set:{"model.$.color": "Blue"}})
+
+db.products.updateOne({manufacturer:"GE", "model.size":"large"}
+    , {$set:{"model.$.color": "silver"}})
+
+db.products.updateOne({manufacturer:"GE", "model.size":"large"}
+    , {$set:{"model.1.color": "silver"}})
+
+db.products.replaceOne({ manufacturer: "GE" }, { manufacturer: 'GE', price: 209.99, retailer: 179, model: [ { size: 'large', color: 'green' }, { size: 'medium', color: 'blue' }, { size: 'small', color: 'yellow' }, { size: 'large', color: 'purple' }], location: {city:'London',country:'UK'} })
+
+
+
 db.products.count()
 
 db.products.distinct("manufacturer")
@@ -134,3 +161,13 @@ s.commitTransaction()
 s.abortTransaction()
 db.table1.find()
 
+
+ex2_2.txt
+use Northwind
+db.products.find({"UnitPrice":{$gte:20, $lte:30}}
+    , {_id:0, ProductID:1, ProductName:1, UnitPrice:1})
+db.products.find({"CategoryID": {$in: [1, 3]}}
+    , {_id:0, ProductID:1, ProductName:1, UnitPrice:1}).sort({"UnitPrice":-1})
+
+use Northwind2
+db.orders1.find({"LineItems.ProductID":18}).count()

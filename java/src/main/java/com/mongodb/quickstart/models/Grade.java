@@ -54,8 +54,8 @@ public class Grade {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Grade{");
-        sb.append("id=").append(id);
-        sb.append(", student_id=").append(studentId);
+        sb.append("*id=").append(id);
+        sb.append(", Student_id=").append(studentId);
         sb.append(", class_id=").append(classId);
         sb.append(", scores=").append(scores);
         sb.append('}');
